@@ -28,6 +28,12 @@ delete:
 	--header 'authorization: Bearer jwt' \
 	--header 'user-agent: vscode-restclient'
 
+insert:
+	curl -v --request POST \
+  	--url http://localhost:8083/v1/search/ \
+	--header 'authorization: Bearer jwt' \
+	--data '{"number": 3}'
+
 checkEnvExists:
     ifeq (,$(wildcard .env))
         $(error .env file does not exist)
