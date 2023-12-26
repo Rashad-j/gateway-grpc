@@ -5,11 +5,13 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 )
 
 func (c *ServiceClient) Authenticate(ctx *gin.Context) {
 	authorization := ctx.Request.Header.Get("authorization")
 	if authorization == "" {
+		log.Error().Msg("authorization header is missing")
 		ctx.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}

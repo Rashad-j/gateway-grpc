@@ -9,6 +9,7 @@ type Config struct {
 	TLSEnabled  bool   `env:"TLS" envDefault:"false"`
 	TLSCertFile string `env:"TLS_CERT_FILE" envDefault:""`
 	TLSKeyFile  string `env:"TLS_KEY_FILE" envDefault:""`
+	Version     string `env:"VERSION" envDefault:"v1"`
 }
 
 func ReadConfig() (*Config, error) {
