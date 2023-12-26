@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option go_package = "rpc/search";
+
+service SearchService {
+    rpc Search(SearchRequest) returns (SearchResponse);
+    rpc Insert(InsertRequest) returns (InsertResponse);
+    rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+message SearchRequest {
+    int32 number = 1;
+}
+
+message SearchResponse {
+    int32 position = 1;
+}
+
+message InsertRequest {
+    int32 number = 1;
+}
+
+message InsertResponse {
+    int32 position = 1;
+}
+
+message DeleteRequest {
+    int32 number = 1;
+}
+
+message DeleteResponse {
+    int32 position = 1;
+}

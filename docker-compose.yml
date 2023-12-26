@@ -1,0 +1,23 @@
+version: "3"
+services:
+  gateway:
+    image: rashadalbo/thinksurancegateway:latest
+    ports:
+      - "8083:8083"
+    depends_on:
+      - jsonparser
+      - binarysearch
+    environment:
+      - PARSER_ADDR=jsonparser:8081
+      - SEARCH_ADDR=binarysearch:8082
+      - GIN_MODE=release
+
+  jsonparser:
+    image: rashadalbo/thinksurancejsonparser:latest
+    ports:
+      - "8081:8081"
+
+  binarysearch:
+    image: rashadalbo/thinksurancesearcher:latest
+    ports:
+      - "8082:8082"
