@@ -8,11 +8,10 @@ import (
 	"github.com/rashad-j/grpc-gateway/rpc/parser"
 )
 
-func RegisterRoutes(r *gin.RouterGroup, svc ParserService) error {
+func RegisterRoutes(r *gin.RouterGroup, svc ParserService) {
 	routes := r.Group("/parse")
 	routes.Use(instrument)
 	routes.GET("/", svc.parseJsonFilesHandler)
-	return nil
 }
 
 func (sc *ServiceClient) parseJsonFilesHandler(c *gin.Context) {

@@ -34,10 +34,7 @@ func main() {
 		panic(err)
 	}
 	parserClient := parsersvc.NewServiceClient(parser)
-	if err := parsersvc.RegisterRoutes(s.BaseRouter, parserClient); err != nil {
-		log.Error().Err(err).Msg("failed to register parser routes")
-		panic(err)
-	}
+	parsersvc.RegisterRoutes(s.BaseRouter, parserClient)
 
 	// gRPC client for the search service
 	searcher, err := searchsvc.DialServiceClient(cfg)
@@ -46,10 +43,7 @@ func main() {
 		panic(err)
 	}
 	searchClient := searchsvc.NewServiceClient(searcher)
-	if err := searchsvc.RegisterRoutes(s.BaseRouter, searchClient); err != nil {
-		log.Error().Err(err).Msg("failed to register search routes")
-		panic(err)
-	}
+	searchsvc.RegisterRoutes(s.BaseRouter, searchClient)
 
 	// start server
 	if err := s.Serve(cfg); err != nil {

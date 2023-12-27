@@ -8,15 +8,13 @@ import (
 	"github.com/rashad-j/grpc-gateway/rpc/search"
 )
 
-func RegisterRoutes(r *gin.RouterGroup, svc SearchService) error {
+func RegisterRoutes(r *gin.RouterGroup, svc SearchService) {
 	routes := r.Group("/search")
 	routes.Use(instrument)
 
 	routes.GET("/:number", svc.search)
 	routes.POST("/", svc.insert)
 	routes.DELETE("/:number", svc.delete)
-
-	return nil
 }
 
 func (sc *ServiceClient) search(ctx *gin.Context) {
