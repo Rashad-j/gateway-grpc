@@ -16,7 +16,7 @@ build:
 run: build
 	./bin/server
 
-getParser:
+jsonParser:
 	curl -v --request GET \
   	--url http://localhost:8083/v1/parse/ \
 	--header 'authorization: Bearer jwt' \

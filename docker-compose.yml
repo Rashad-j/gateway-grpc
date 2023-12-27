@@ -1,7 +1,7 @@
 version: "3"
 services:
   gateway:
-    image: rashadalbo/thinksurancegateway:latest
+    image: rashadalbo/grpcgateway:latest
     ports:
       - "8083:8083"
     depends_on:
@@ -13,11 +13,11 @@ services:
       - GIN_MODE=release
 
   jsonparser:
-    image: rashadalbo/thinksurancejsonparser:latest
+    image: rashadalbo/jsonparser:latest
     ports:
       - "8081:8081"
 
   binarysearch:
-    image: rashadalbo/thinksurancesearcher:latest
+    image: rashadalbo/binarysearch:latest
     ports:
       - "8082:8082"
