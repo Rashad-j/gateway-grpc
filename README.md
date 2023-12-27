@@ -27,4 +27,4 @@ $ docker compose up
 
 Then you can use the commands in makefile, e.g. `make jsonParser` to get all the json files from the json parser service, or use `make search`, `make delete`, or `make insert` to test the remote store service. Have a look on `makefile` to understand more.
 
-Note: the
+Note: that both services are started with some random data to enable you to play with it's service and test it. 
