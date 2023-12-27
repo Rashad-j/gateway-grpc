@@ -1,6 +1,8 @@
 package searchsvc
 
 import (
+	"context"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/rashad-j/grpc-gateway/internal/config"
@@ -30,6 +32,12 @@ func DialServiceClient(cfg *config.Config) (search.SearchServiceClient, error) {
 		return nil, errors.Wrap(err, "failed to dial server")
 	}
 	searchClient := search.NewSearchServiceClient(conn)
+
+	// test connection is successful
+	_, err = searchClient.Search(context.Background(), &search.SearchRequest{})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to dial server")
+	}
 
 	return searchClient, nil
 }
