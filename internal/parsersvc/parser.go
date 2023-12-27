@@ -1,12 +1,17 @@
 package parsersvc
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/rashad-j/grpc-gateway/internal/config"
 	"github.com/rashad-j/grpc-gateway/rpc/parser"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
+
+type ParserService interface {
+	parseJsonFilesHandler(*gin.Context)
+}
 
 type ServiceClient struct {
 	parserClient parser.JsonParsingServiceClient
@@ -18,7 +23,7 @@ func NewServiceClient(parserClient parser.JsonParsingServiceClient) *ServiceClie
 	}
 }
 
-func MakeServiceClient(cfg *config.Config) (parser.JsonParsingServiceClient, error) {
+func DialServiceClient(cfg *config.Config) (parser.JsonParsingServiceClient, error) {
 	conn, err := grpc.Dial(cfg.ParserAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to dial server")

@@ -3,7 +3,6 @@ package main
 import (
 	"os"
 
-	"github.com/rashad-j/grpc-gateway/internal/authsvc"
 	"github.com/rashad-j/grpc-gateway/internal/config"
 	"github.com/rashad-j/grpc-gateway/internal/parsersvc"
 	"github.com/rashad-j/grpc-gateway/internal/searchsvc"
@@ -26,26 +25,33 @@ func main() {
 	// create server with version and base router
 	s := server.NewServer(cfg.Version)
 	s.BaseRouter.Use(server.Instrument)
-
-	// gRPC client for the auth service
-	authSvc, err := authsvc.RegisterRoutes(s.BaseRouter, cfg)
-	if err != nil {
-		log.Error().Err(err).Msg("failed to register auth routes")
-		panic(err)
-	}
+	s.BaseRouter.Use(server.Authenticate)
 
 	// gRPC client for the parser service
-	if err := parsersvc.RegisterRoutes(s.BaseRouter, cfg, authSvc); err != nil {
+	parser, err := parsersvc.DialServiceClient(cfg)
+	if err != nil {
+		log.Error().Err(err).Msg("failed to dial parser service")
+		panic(err)
+	}
+	parserClient := parsersvc.NewServiceClient(parser)
+	if err := parsersvc.RegisterRoutes(s.BaseRouter, parserClient); err != nil {
 		log.Error().Err(err).Msg("failed to register parser routes")
 		panic(err)
 	}
 
 	// gRPC client for the search service
-	if err := searchsvc.RegisterRoutes(s.BaseRouter, cfg, authSvc); err != nil {
+	searcher, err := searchsvc.DialServiceClient(cfg)
+	if err != nil {
+		log.Error().Err(err).Msg("failed to dial search service")
+		panic(err)
+	}
+	searchClient := searchsvc.NewServiceClient(searcher)
+	if err := searchsvc.RegisterRoutes(s.BaseRouter, searchClient); err != nil {
 		log.Error().Err(err).Msg("failed to register search routes")
 		panic(err)
 	}
 
+	// start server
 	if err := s.Serve(cfg); err != nil {
 		log.Error().Err(err).Msg("failed to serve")
 		panic(err)

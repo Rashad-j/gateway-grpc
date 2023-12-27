@@ -5,22 +5,11 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pkg/errors"
-	"github.com/rashad-j/grpc-gateway/internal/authsvc"
-	"github.com/rashad-j/grpc-gateway/internal/config"
 	"github.com/rashad-j/grpc-gateway/rpc/search"
 )
 
-func RegisterRoutes(r *gin.RouterGroup, cfg *config.Config, authSvc *authsvc.ServiceClient) error {
-	// TODO: implement retry logic on connection failure
-	parserClient, err := MakeServiceClient(cfg)
-	if err != nil {
-		return errors.Wrap(err, "failed to dial server")
-	}
-	svc := NewServiceClient(parserClient)
-
+func RegisterRoutes(r *gin.RouterGroup, svc SearchService) error {
 	routes := r.Group("/search")
-	routes.Use(authSvc.Authenticate)
 	routes.Use(instrument)
 
 	routes.GET("/:number", svc.search)

@@ -1,6 +1,7 @@
 package searchsvc
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/rashad-j/grpc-gateway/internal/config"
 	"github.com/rashad-j/grpc-gateway/rpc/search"
@@ -8,6 +9,11 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+type SearchService interface {
+	search(ctx *gin.Context)
+	insert(ctx *gin.Context)
+	delete(ctx *gin.Context)
+}
 type ServiceClient struct {
 	searchClient search.SearchServiceClient
 }
@@ -18,7 +24,7 @@ func NewServiceClient(client search.SearchServiceClient) *ServiceClient {
 	}
 }
 
-func MakeServiceClient(cfg *config.Config) (search.SearchServiceClient, error) {
+func DialServiceClient(cfg *config.Config) (search.SearchServiceClient, error) {
 	conn, err := grpc.Dial(cfg.SearchAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to dial server")

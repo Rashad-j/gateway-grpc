@@ -1,6 +1,14 @@
 package authsvc
 
-import "github.com/rashad-j/grpc-gateway/internal/config"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/rashad-j/grpc-gateway/internal/config"
+)
+
+type AuthService interface {
+	Register(*gin.Context)
+	Login(*gin.Context)
+}
 
 type ServiceClient struct {
 	// Client is the gRPC client for the auth service
@@ -8,7 +16,7 @@ type ServiceClient struct {
 	Client interface{}
 }
 
-func InitClient(cfg *config.Config) *ServiceClient {
+func NewAuthServiceClient(cfg *config.Config) *ServiceClient {
 	// TODO: Initialize the gRPC client for the auth service
 	// TODO: Return the real gRPC client from the auth microservice
 	return &ServiceClient{}
