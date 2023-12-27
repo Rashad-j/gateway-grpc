@@ -10,6 +10,12 @@ genParser:
 
 genAll: genSearch genParser
 
+build:
+	go build -o bin/server cmd/server/main.go
+
+run: build
+	./bin/server
+
 getParser:
 	curl -v --request GET \
   	--url http://localhost:8083/v1/parse/ \
@@ -42,7 +48,7 @@ checkEnvExists:
 loadEnv:
 	export $(xargs < .env)
 
-dockerBuildRun: checkIFEnvExists
+dockerBuildRun: checkEnvExists
 	docker build -t gateway . && \
 	docker run --rm -it -p 8083:8083 --env-file .env gateway
 

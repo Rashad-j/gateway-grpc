@@ -1,6 +1,8 @@
 package parsersvc
 
 import (
+	"context"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/rashad-j/grpc-gateway/internal/config"
@@ -29,6 +31,12 @@ func DialServiceClient(cfg *config.Config) (parser.JsonParsingServiceClient, err
 		return nil, errors.Wrap(err, "failed to dial server")
 	}
 	client := parser.NewJsonParsingServiceClient(conn)
+
+	// test connection is successful
+	_, err = client.ParseJsonFiles(context.Background(), &parser.EmptyRequest{})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to dial server")
+	}
 
 	return client, nil
 }
