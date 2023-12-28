@@ -1,6 +1,6 @@
 module github.com/rashad-j/grpc-gateway
 
-go 1.21.5
+go 1.20.12
 
 require (
 	github.com/caarlos0/env v3.5.0+incompatible
