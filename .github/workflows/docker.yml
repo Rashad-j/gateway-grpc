@@ -37,6 +37,6 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64,darwin
-          tags: ${{ secrets.DOCKER_USER }}/${{ env.DOCKER_IMAGE }}:latest,${{ secrets.DOCKER_USER }}/${{ env.DOCKER_IMAGE }}:${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
